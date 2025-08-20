@@ -29,11 +29,11 @@ public:
     	auto btn = CCMenuItemSpriteExtra::create(
         	spr, this, menu_selector(TheMapLayer::onButton)
     	);
-		btn->setPosition({240, 160})
+		btn->setPosition({240, 160});
 
 		auto menu = CCMenu::create();
 		menu->addChild(btn);
-		menu->setPosition({0, 0})
+		menu->setPosition({0, 0});
 		
 		// Scrolling support
 		auto windowSize = CCDirector::sharedDirector()->getWinSize();
