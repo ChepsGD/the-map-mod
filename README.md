@@ -1,0 +1,1 @@
+<img src="https://cdn.discordapp.com/emojis/1308029449002029096.webp?size=128&animated=true" width="150" alt="pigeon" />
