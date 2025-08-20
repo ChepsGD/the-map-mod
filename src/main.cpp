@@ -65,7 +65,7 @@ public:
         level->m_creatorName = "Me";
 		level->m_nLevelID = 3335;
 
-		auto lvlLayer = gd::LevelInfoLayer::create(level, true); // example id idk
+		auto lvlLayer = LevelInfoLayer::create(level, true); // example id idk
 		lvlLayer->downloadLevel();
 		auto lvlScene = CCScene::create();
 		lvlScene->addChild(lvlLayer);
