@@ -63,7 +63,7 @@ public:
 		auto level = GJGameLevel::create();
 		level->m_levelName = "Test Level";
         level->m_creatorName = "Me";
-		level->m_nLevelID = 3335;
+		level->m_levelID_value = 3335;
 
 		auto lvlLayer = LevelInfoLayer::create(level, true); // example id idk
 		lvlLayer->downloadLevel();
