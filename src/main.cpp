@@ -24,7 +24,7 @@ public:
 		// Handle loading assets
 		auto bg = cocos2d::CCSprite::create("mapbg.png");
 		bg->setPosition({ 240, 160 }); // center of 480x320 scene
-		auto spr = ButtonSprite::create("Hi mom!");
+		auto spr = CircleButtonSprite::createWithSpriteFrameName("GJ_moveBtn-hd.png"_spr);
 
     	auto btn = CCMenuItemSpriteExtra::create(
         	spr, this, menu_selector(TheMapLayer::onButton)
@@ -55,12 +55,8 @@ public:
         return true;
     }
 	void onButton(CCObject*) {
-		FLAlertLayer::create(
-    	"Title",    // title
-    	"Hi mom!",  // content
-    	"OK"        // button
-		)->show();
-		auto level = GameLevelManager::sharedState()->getMainLevel(3335, true);
+		auto lvl1ID = Mod::get()->getSettingValue<int64_t>("level-one-id");
+		auto level = GameLevelManager::sharedState()->getMainLevel(lvl1ID, false);
 
 		auto lvlLayer = LevelInfoLayer::create(level, true); // example id idk
 		lvlLayer->downloadLevel();
