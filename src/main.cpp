@@ -24,13 +24,13 @@ public:
 		// Handle loading assets
 		auto bg = cocos2d::CCSprite::create("mapbg.png");
 		bg->setPosition({ 240, 160 }); // center of 480x320 scene
-		auto spr = CircleButtonSprite::create("GJ_moveBtn-hd.png");
 
+		auto btnspr = CCSprite::create("GJ_moveBtn-hd.png");
+		auto spr = CircleButtonSprite::create(btnspr);
     	auto btn = CCMenuItemSpriteExtra::create(
         	spr, this, menu_selector(TheMapLayer::onButton)
     	);
 		btn->setPosition({240, 160});
-
 		auto menu = CCMenu::create();
 		menu->addChild(btn);
 		menu->setPosition({0, 0});
