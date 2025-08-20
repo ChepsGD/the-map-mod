@@ -61,6 +61,8 @@ public:
     	"OK"        // button
 		)->show();
 		auto level = gd::GJGameLevel::create();
+		level->m_levelName = "Test Level";
+        level->m_creatorName = "Me";
 		level->m_nLevelID = 3335;
 
 		auto lvlLayer = gd::LevelInfoLayer::create(level, true); // example id idk
