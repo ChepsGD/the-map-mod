@@ -95,3 +95,14 @@ class $modify(MyCreatorLayer, CreatorLayer) {
 		cocos2d::CCDirector::sharedDirector()->replaceScene(transition);
 	} 
 };
+
+#include <Geode/modify/LevelInfoLayer.hpp>
+class $modify(MyInfoLayer, LevelInfoLayer) {
+    bool init() override {
+        if (!LevelInfoLayer::init()) return false;
+
+		this->updateLevelTitle(this->m_level->getName());
+	
+        return true;
+    }
+};
