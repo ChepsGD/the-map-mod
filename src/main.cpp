@@ -16,7 +16,9 @@ public:
 	CREATE_FUNC(TheMapLayer);
     virtual bool init() override {
         if (!CCLayer::init()) return false;
-
+		// This should make it so you can press ESC on PC or the back button on mobile to go back to the Creator Layer 
+		this->setKeypadEnabled(true);
+		
 		// Handle the BGM
 		FMODAudioEngine::sharedEngine()->stopAllMusic(0);
     	FMODAudioEngine::sharedEngine()->playMusic("secretLoop.mp3", true, 1, 0);
