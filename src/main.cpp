@@ -60,10 +60,7 @@ public:
     	"Hi mom!",  // content
     	"OK"        // button
 		)->show();
-		auto level = GJGameLevel::create();
-		level->m_levelName = "Test Level";
-        level->m_creatorName = "Me";
-		level->m_levelID_value = 3335;
+		auto level = GameLevelManager::sharedState()->getMainLevel(3335, true);
 
 		auto lvlLayer = LevelInfoLayer::create(level, true); // example id idk
 		lvlLayer->downloadLevel();
