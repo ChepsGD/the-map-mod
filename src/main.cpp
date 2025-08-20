@@ -60,7 +60,7 @@ public:
     	"Hi mom!",  // content
     	"OK"        // button
 		)->show();
-		auto level = gd::GJGameLevel::create();
+		auto level = GJGameLevel::create();
 		level->m_levelName = "Test Level";
         level->m_creatorName = "Me";
 		level->m_nLevelID = 3335;
