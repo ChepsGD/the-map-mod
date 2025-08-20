@@ -101,7 +101,7 @@ class $modify(MyInfoLayer, LevelInfoLayer) {
     bool init() override {
         if (!LevelInfoLayer::init()) return false;
 
-		this->updateLevelTitle(this->m_level->getName());
+		this->updateLevelTitle(this->m_level->m_levelName);
 	
         return true;
     }
