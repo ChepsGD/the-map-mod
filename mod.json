@@ -5,6 +5,18 @@
 		"android": "2.2074",
 		"mac": "2.2074",
 		"ios": "2.2074"
+	"settings": {
+        "title": {
+            "type": "title",
+            "name": "The Map Settings"
+        },
+        "level-one-id": {
+            "name": "ID For Level 1",
+            "description": "The server-side ID of the level to use as Level 1 for The Map.",
+            "type": "int",
+            "default": 0
+        	},
+		},
 	},
 	"id": "cheps.template",
 	"name": "___ Mod",
