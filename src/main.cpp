@@ -24,7 +24,7 @@ public:
 		// Handle loading assets
 		auto bg = cocos2d::CCSprite::create("mapbg.png");
 		bg->setPosition({ 240, 160 }); // center of 480x320 scene
-		auto spr = CircleButtonSprite::createWithSpriteFrameName("GJ_moveBtn-hd.png"_spr);
+		auto spr = CircleButtonSprite::create("GJ_moveBtn-hd.png");
 
     	auto btn = CCMenuItemSpriteExtra::create(
         	spr, this, menu_selector(TheMapLayer::onButton)
@@ -67,7 +67,7 @@ public:
 
 	virtual void keyBackClicked() {
 		auto goBack = CCScene::create();
-		goBack->addChild(CreatorLayer::create);
+		goBack->addChild(CreatorLayer::create());
 		CCDirector::sharedDirector()->pushScene(CCTransitionFade::create(0.5f, goBack));
 	}
 };
