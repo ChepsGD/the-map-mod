@@ -58,11 +58,17 @@ public:
 		auto lvl1ID = Mod::get()->getSettingValue<int64_t>("level-one-id");
 		auto level = GameLevelManager::sharedState()->getMainLevel(lvl1ID, false);
 
-		auto lvlLayer = LevelInfoLayer::create(level, true); // example id idk
+		auto lvlLayer = LevelInfoLayer::create(level, false); // example id idk
 		lvlLayer->downloadLevel();
 		auto lvlScene = CCScene::create();
 		lvlScene->addChild(lvlLayer);
 		CCDirector::sharedDirector()->pushScene(CCTransitionFade::create(0.5f, lvlScene));
+	}
+
+	virtual void keyBackClicked() {
+		auto goBack = CCScene::create();
+		goBack->addChild(CreatorLayer::create);
+		CCDirector::sharedDirector()->pushScene(CCTransitionFade::create(0.5f, goBack));
 	}
 };
 
