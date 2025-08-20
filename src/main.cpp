@@ -58,7 +58,7 @@ public:
     }
 	void onButton(CCObject*) {
 		auto lvl1ID = Mod::get()->getSettingValue<int64_t>("level-one-id");
-		auto level = GameLevelManager::sharedState()->getUserLevel(lvl1ID, false);
+		auto level = GameLevelManager::sharedState()->getLevel(lvl1ID, false);
 
 		auto lvlLayer = LevelInfoLayer::create(level, false); // example id idk
 		lvlLayer->downloadLevel();
