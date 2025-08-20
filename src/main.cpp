@@ -60,7 +60,10 @@ public:
     	"Hi mom!",  // content
     	"OK"        // button
 		)->show();
-		auto lvlLayer = gd::LevelInfoLayer::create(3335, true); // example id idk
+		auto level = gd::GJGameLevel::create();
+		level->m_nLevelID = 3335;
+
+		auto lvlLayer = gd::LevelInfoLayer::create(level, true); // example id idk
 		lvlLayer->downloadLevel();
 		auto lvlScene = CCScene::create();
 		lvlScene->addChild(lvlLayer);
