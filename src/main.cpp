@@ -5,126 +5,90 @@
 #include <Geode/utils/web.hpp>
 #include <Geode/utils/casts.hpp>
 
-/**
- * Brings cocos2d and all Geode namespaces to the current scope.
- */
+#include <Geode/binding/FMODAudioEngine.hpp>
+#include "cocos-ext.h"
+USING_NS_CC_EXT;
+
 using namespace geode::prelude;
 
-/**
- * `$modify` lets you extend and modify GD's classes.
- * To hook a function in Geode, simply $modify the class
- * and write a new function definition with the signature of
- * the function you want to hook.
- *
- * Here we use the overloaded `$modify` macro to set our own class name,
- * so that we can use it for button callbacks.
- *
- * Notice the header being included, you *must* include the header for
- * the class you are modifying, or you will get a compile error.
- *
- * Another way you could do this is like this:
- *
- * struct MyMenuLayer : Modify<MyMenuLayer, MenuLayer> {};
- */
-#include <Geode/modify/MenuLayer.hpp>
-class $modify(MyMenuLayer, MenuLayer) {
-	/**
-	 * Typically classes in GD are initialized using the `init` function, (though not always!),
-	 * so here we use it to add our own button to the bottom menu.
-	 *
-	 * Note that for all hooks, your signature has to *match exactly*,
-	 * `void init()` would not place a hook!
-	*/
-	bool init() {
-		/**
-		 * We call the original init function so that the
-		 * original class is properly initialized.
-		 */
-		if (!MenuLayer::init()) {
-			return false;
-		}
+class TheMapLayer : public cocos2d::CCLayer {
+public:
+	CREATE_FUNC(TheMapLayer);
+    virtual bool init() override {
+        if (!CCLayer::init()) return false;
 
-		/**
-		 * You can use methods from the `geode::log` namespace to log messages to the console,
-		 * being useful for debugging and such. See this page for more info about logging:
-		 * https://docs.geode-sdk.org/tutorials/logging
-		*/
-		log::debug("Hello from my MenuLayer::init hook! This layer has {} children.", this->getChildrenCount());
+		// Handle the BGM
+		FMODAudioEngine::sharedEngine()->stopAllMusic(0);
+    	FMODAudioEngine::sharedEngine()->playMusic("secretLoop.mp3", true, 1, 0);
 
-		/**
-		 * See this page for more info about buttons
-		 * https://docs.geode-sdk.org/tutorials/buttons
-		*/
-		auto myButton = CCMenuItemSpriteExtra::create(
-			CCSprite::createWithSpriteFrameName("GJ_gpgBtn_001.png"),
-			this,
-			/**
-			 * Here we use the name we set earlier for our modify class.
-			*/
-			menu_selector(MyMenuLayer::onMyButton)
-		);
+		// Handle loading assets
+		auto bg = cocos2d::CCSprite::create("mapbg.png");
+		bg->setPosition({ 240, 160 }); // center of 480x320 scene
+		auto spr = ButtonSprite::create("Hi mom!");
 
-		/**
-		 * Here we access the `bottom-menu` node by its ID, and add our button to it.
-		 * Node IDs are a Geode feature, see this page for more info about it:
-		 * https://docs.geode-sdk.org/tutorials/nodetree
-		*/
-		auto menu = this->getChildByID("bottom-menu");
-		menu->addChild(myButton);
+    	auto btn = CCMenuItemSpriteExtra::create(
+        	spr, this, menu_selector(TheMapLayer::onButton)
+    	);
+		btn->setPosition({240, 160})
 
-		/**
-		 * The `_spr` string literal operator just prefixes the string with
-		 * your mod id followed by a slash. This is good practice for setting your own node ids.
-		*/
-		myButton->setID("my-button"_spr);
+		auto menu = CCMenu::create();
+		menu->addChild(btn);
+		menu->setPosition({0, 0})
+		
+		// Scrolling support
+		auto windowSize = CCDirector::sharedDirector()->getWinSize();
+		auto scrolLayer = CCLayer::create();
+		scrolLayer->addChild(bg, -1);
+		auto scroll = CCScrollView::create({windowSize.width, windowSize.height}, scrolLayer);
+		scroll->setDirection(kCCScrollViewDirectionBoth);  
+		scroll->setTouchEnabled(true);
+		scroll->setContentSize({ windowSize.width * 2, windowSize.height * 2 });
+		this->addChild(scroll);
+		menu->addChild(btn);
 
-		/**
-		 * We update the layout of the menu to ensure that our button is properly placed.
-		 * This is yet another Geode feature, see this page for more info about it:
-		 * https://docs.geode-sdk.org/tutorials/layouts
-		*/
-		menu->updateLayout();
-
-		/**
-		 * We return `true` to indicate that the class was properly initialized.
-		 */
-		return true;
-	}
-
-	/**
-	 * This is the callback function for the button we created earlier.
-	 * The signature for button callbacks must always be the same,
-	 * return type `void` and taking a `CCObject*`.
-	*/
-	void onMyButton(CCObject*) {
-		web::openLinkInBrowser("https://www.example.com/");
+		// Handle loading assets that dont scroll and show above it.
+		auto label = cocos2d::CCLabelBMFont::create("The Map", "goldFont.fnt");
+        label->setPosition({ 275, 300 }); // center of 480x320 scene
+        this->addChild(label);
+		
+        // Initialize SomeNode
+        return true;
+    }
+	void onButton(CCObject*) {
+		FLAlertLayer::create(
+    	"Title",    // title
+    	"Hi mom!",  // content
+    	"OK"        // button
+		)->show();
+		auto lvlLayer = gd::LevelInfoLayer::create(3335); // example id idk
+		lvlLayer->downloadLevel();
+		auto lvlScene = CCScene::create();
+		lvlScene->addChild(lvlLayer);
+		CCDirector::sharedDirector()->pushScene(CCTransitionFade::create(0.5f, lvlScene));
+		TheMapLayer->removeFromParent();
 	}
 };
 
-// Example for the Creator Layer
 #include <Geode/modify/CreatorLayer.hpp>
+#include <Geode/utils/web.hpp>
 class $modify(MyCreatorLayer, CreatorLayer) {
     bool init() override {
         if (!CreatorLayer::init()) return false;
 
-		// Make sure to reference all the buttons so the game knows what we are talking about.
         auto menu = static_cast<CCMenu*>(this->getChildByID("creator-buttons-menu"));
         if (!menu) return true;
 
-		// Removing the Versus Mode button as a demonstration of what is possible.
-        auto mapBtn = static_cast<CCMenuItemSpriteExtra*>(menu->getChildByID("versus-button"));
-        if (mapBtn) {
-            mapBtn->setVisible(false);
-        }
         return true;
     }
-	// The Map button. Comes from riredll but it was kept due to me wanting to show off FL Alert Layers
 	void onAdventureMap(CCObject*) {
-		FLAlertLayer::create(
-    	"FL Alert Layer Title",    // title
-    	"Hello, world!",  // content
-    	"wowie"        // button
-		)->show();
+		auto myLayer = TheMapLayer::create();
+		
+		auto scene = cocos2d::CCScene::create();
+    	scene->addChild(myLayer);
+		
+        scene->addChild(myLayer);
+		
+		auto transition = cocos2d::CCTransitionFade::create(0.5f, scene);
+		cocos2d::CCDirector::sharedDirector()->replaceScene(transition);
 	} 
 };
-
