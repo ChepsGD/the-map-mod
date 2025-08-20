@@ -65,7 +65,6 @@ public:
 		auto lvlScene = CCScene::create();
 		lvlScene->addChild(lvlLayer);
 		CCDirector::sharedDirector()->pushScene(CCTransitionFade::create(0.5f, lvlScene));
-		TheMapLayer->removeFromParent();
 	}
 };
 
