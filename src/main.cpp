@@ -39,13 +39,12 @@ public:
 		auto windowSize = CCDirector::sharedDirector()->getWinSize();
 		auto scrolLayer = CCLayer::create();
 		scrolLayer->addChild(bg, -1);
-		scrolLayer->addChild(btn, 0);
+		scrolLayer->addChild(menu, 0);
 		auto scroll = CCScrollView::create({windowSize.width, windowSize.height}, scrolLayer);
 		scroll->setDirection(kCCScrollViewDirectionBoth);  
 		scroll->setTouchEnabled(true);
 		scroll->setContentSize({ windowSize.width * 2, windowSize.height * 2 });
 		this->addChild(scroll);
-		menu->addChild(btn);
 
 		// Handle loading assets that dont scroll and show above it.
 		auto label = cocos2d::CCLabelBMFont::create("The Map", "goldFont.fnt");
@@ -87,8 +86,6 @@ class $modify(MyCreatorLayer, CreatorLayer) {
 		
 		auto scene = cocos2d::CCScene::create();
     	scene->addChild(myLayer);
-		
-        scene->addChild(myLayer);
 		
 		auto transition = cocos2d::CCTransitionFade::create(0.5f, scene);
 		cocos2d::CCDirector::sharedDirector()->replaceScene(transition);
